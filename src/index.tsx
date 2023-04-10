@@ -1,7 +1,10 @@
 import Navigator from "./components/Navigator";
+import { LoginProvider } from "./context/LoginContext";
 
 export default function App() {
 	return (
-		<Navigator />
+		<LoginProvider>
+			<Navigator />
+		</LoginProvider>
 	);
 }
