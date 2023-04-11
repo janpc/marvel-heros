@@ -3,7 +3,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../../screens/Login';
 import HeroList from '../../screens/HerosList';
 import HeroDetails from '../../screens/HerosDetails';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 import LoginContext from '../../context/LoginContext';
 import UserMenu from '../UserMenu/Navigator';
 

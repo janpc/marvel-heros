@@ -1,6 +1,6 @@
 import { Button, SafeAreaView, Text } from 'react-native';
 import LoginContext from '../../context/LoginContext';
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 export default function Login() {
   const {login} = useContext(LoginContext)
