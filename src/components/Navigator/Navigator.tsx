@@ -3,8 +3,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../../screens/Login';
 import HeroList from '../../screens/HerosList';
 import HeroDetails from '../../screens/HerosDetails';
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import LoginContext from '../../context/LoginContext';
+import UserMenu from '../UserMenu/Navigator';
 
 const { Navigator, Screen } = createNativeStackNavigator();
 
@@ -13,6 +14,18 @@ export default function MyNavigator() {
   return (
     <NavigationContainer>
       <Navigator
+        screenOptions={{
+          headerRight: () => (
+            <UserMenu />
+          ),
+          headerStyle: {
+            backgroundColor: '#E23636',
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontWeight: 'bold',
+          },
+        }}
       >
         {
           !logged ?
@@ -20,9 +33,7 @@ export default function MyNavigator() {
             name="Login"
             component={Login }
             options={{
-              headerTitleStyle: {
-                fontSize: 24,
-              },
+              headerShown: false,
             }}
           /> :
           <>
