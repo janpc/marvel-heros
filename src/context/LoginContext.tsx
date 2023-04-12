@@ -1,15 +1,21 @@
 import React, { createContext, ReactNode, useState } from "react";
+import {NAME, EMAIL} from '@env'
+
+type UserType = {
+  name: string | undefined;
+  email: string | undefined;
+}
 
 type InitialStateType = {
   logged: boolean;
-  user: string;
+  user: UserType;
   login: Function;
   logout: Function;
 }
 
 const initialState = {
   logged: false,
-  user: '',
+  user: {name: '', email: ''},
   login: () => {},
   logout: () => {},
 }
@@ -18,15 +24,17 @@ const LoginContext = createContext<InitialStateType>(initialState);
 export function LoginProvider({ children }: { children: ReactNode }){
 
   const [logged, setLogged] = useState(false);
-  const [user, setUser] = useState('');
+  const [user, setUser] = useState<UserType>({name: '', email: ''});
 
   function login(email: string, password: string) {
-    setUser('user');
+    console.log(NAME);
+
+    setUser({name: NAME, email: EMAIL});
     setLogged(true);
   }
 
   function logout() {
-    setUser('');
+    setUser({name: '', email: ''});
     setLogged(false);
   }
 
