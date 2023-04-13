@@ -11,13 +11,16 @@ type MinHeroType ={
 }
 
 type PropsTypes = {
-  item: MinHeroType
+  item: MinHeroType,
+  navigation: any
 }
 
-export default function HeroItem({item} : PropsTypes) {
+export default function HeroItem({item, navigation} : PropsTypes) {
 
   return (
-    <View style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate('HeroDetails', {id: item.id})}>
       <Image
         style={styles.image}
         source={{uri:
@@ -38,6 +41,6 @@ export default function HeroItem({item} : PropsTypes) {
           />
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 };

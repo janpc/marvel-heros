@@ -65,10 +65,11 @@ type FullHero = {
   }
 }
 
-type MinHeroType ={
+type HeroType ={
   id: number;
   image: string;
   name: string;
+  description: string;
   comics: number;
 }
 
@@ -85,19 +86,27 @@ const api = create({
   }
 })
 
-export const  getHeros = async (page: number): Promise<MinHeroType[]> => {
+export const  getHeros = async (page: number): Promise<{list: HeroType[], total: number}> => {
   const res = await api.get(`/characters?limit=20&offset=${20 * page}`);
   const resultsNormalized = res.data.data.results.map((hero: FullHero ) => normalizeHero(hero))
 
-  return resultsNormalized;
+  return {list: resultsNormalized, total: res.data.data.total};
 }
 
-const normalizeHero = (hero: FullHero): MinHeroType => {
+export const getHero = async (id: number): Promise<HeroType> => {
+  const res = await api.get(`/characters/${id}`);
+  const hero = normalizeHero(res.data.data.results[0])
+
+  return hero;
+}
+
+const normalizeHero = (hero: FullHero): HeroType => {
   const heroNormalized = {
     id: hero.id,
     name: hero.name,
     comics: hero.comics.available,
-    image: hero.thumbnail.path + '.' + hero.thumbnail.extension
+    image: hero.thumbnail.path + '.' + hero.thumbnail.extension,
+    description: hero.description
   }
 
   return heroNormalized;

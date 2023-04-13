@@ -1,13 +1,15 @@
+import React, { useContext } from 'react';
+import { Image } from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../../screens/Login';
 import HeroList from '../../screens/HerosList';
 import HeroDetails from '../../screens/HerosDetails';
-import React, { useContext } from 'react';
 import LoginContext from '../../context/LoginContext';
 import UserMenu from '../UserMenu';
+import styles from './styles';
 
-const { Navigator, Screen } = createNativeStackNavigator();
+const { Navigator, Screen } = createNativeStackNavigator<RootStackParamList>();
 
 export default function MyNavigator() {
   const {logged} = useContext(LoginContext)
@@ -34,6 +36,9 @@ export default function MyNavigator() {
           headerRight: () => (
             <UserMenu />
           ),
+          headerTitle: () => (
+          <Image style={styles.logo} source={require('../../img/MarvelLogo.png')} />
+          ),
           headerStyle: {
             backgroundColor: '#f0131e',
           },
@@ -46,19 +51,17 @@ export default function MyNavigator() {
         <Screen
           name="HeroList"
           component={HeroList}
-          options={({ route }: any) => ({
-            title: 'Hero List',
+          options={{
             headerBackTitleVisible: false,
             headerBackVisible: false,
-          })}
+          }}
         />
         <Screen
           name="HeroDetails"
           component={HeroDetails}
-          options={({ route }: any) => ({
-            title: route.params.name,
+          options={{
             headerBackTitleVisible: false
-          })}
+          }}
         />
       </Navigator>
     </NavigationContainer>
