@@ -1,5 +1,5 @@
 import React, { createContext, ReactNode, useState } from "react";
-import {NAME, EMAIL} from '@env'
+import { validateLogin } from "../utils/validateLogin";
 
 type UserType = {
   name: string | undefined;
@@ -15,7 +15,10 @@ type InitialStateType = {
 
 const initialState = {
   logged: false,
-  user: {name: '', email: ''},
+  user: {
+    name: '',
+    email: ''
+  },
   login: () => {},
   logout: () => {},
 }
@@ -26,11 +29,18 @@ export function LoginProvider({ children }: { children: ReactNode }){
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState<UserType>({name: '', email: ''});
 
-  function login(email: string, password: string) {
-    console.log(NAME);
+  function login(email: string, password: string): boolean {
+    const {user, error} = validateLogin(email, password);
 
-    setUser({name: NAME, email: EMAIL});
+    if( error) {
+      return false
+    }
+    console.log('hola');
+
+    setUser({name: user.name, email: user.email});
     setLogged(true);
+
+    return true;
   }
 
   function logout() {

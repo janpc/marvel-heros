@@ -12,9 +12,6 @@ type PropsTypes = {
 export default function UserModal({visible, close} : PropsTypes) {
   const {user, logout} = useContext(LoginContext);
 
-  console.log(visible);
-
-
   const closeAndLogout = () => {
     close();
     logout();
