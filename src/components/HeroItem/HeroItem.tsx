@@ -18,8 +18,26 @@ export default function HeroItem({item} : PropsTypes) {
 
   return (
     <View style={styles.container}>
-      <Image style={styles.image} source={{uri: item.image}} />
-      <Text>{item.name}</Text>
+      <Image
+        style={styles.image}
+        source={{uri:
+        item.image}}
+        />
+      <View style={styles.infoContainer}>
+        <Text style={styles.title}>
+          {item.name}
+        </Text>
+        <View style={styles.comicsContainer}>
+          <Text style={styles.comics}>
+            {item.comics}
+          </Text>
+          <Ionicons
+            name="book-outline"
+            size={24}
+            color="#000"
+          />
+        </View>
+      </View>
     </View>
   );
 };

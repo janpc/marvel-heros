@@ -12,10 +12,12 @@ type MinHeroType ={
 
 export default function HeroList() {
   const [list, setList] = useState<MinHeroType[]>([]);
+  const [page, setPage] = useState<number>(0)
 
-  const getHeroList = async (page = 0) => {
-    const heroList = await getHeros();
-    setList(heroList);
+  const getHeroList = async () => {
+    const heroList = await getHeros(page);
+    setList([...list, ...heroList]);
+    setPage(page + 1);
   }
 
   useEffect(() => {
@@ -27,7 +29,7 @@ export default function HeroList() {
       data={list}
       renderItem={({item}) => <HeroItem item={item} />}
       keyExtractor={(item) => item.id.toString()}
-      onEndReached={() => console.log('end')}
+      onEndReached={getHeroList}
       refreshing
     />
   );

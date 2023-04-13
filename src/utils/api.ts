@@ -85,8 +85,8 @@ const api = create({
   }
 })
 
-export const  getHeros = async (): Promise<MinHeroType[]> => {
-  const res = await api.get('/characters');
+export const  getHeros = async (page: number): Promise<MinHeroType[]> => {
+  const res = await api.get(`/characters?limit=20&offset=${20 * page}`);
   const resultsNormalized = res.data.data.results.map((hero: FullHero ) => normalizeHero(hero))
 
   return resultsNormalized;
