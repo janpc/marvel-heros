@@ -35,7 +35,7 @@ export default function MyNavigator() {
             <UserMenu />
           ),
           headerStyle: {
-            backgroundColor: '#E23636',
+            backgroundColor: '#f0131e',
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
