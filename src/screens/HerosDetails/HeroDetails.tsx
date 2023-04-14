@@ -1,6 +1,7 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, Text } from 'react-native';
+import { ActivityIndicator, ImageBackground, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 import { getHero } from '../../utils/api';
 import styles from './styles';
 
@@ -20,15 +21,30 @@ export default function HeroDetails({route}: Props) {
   const getDetails = async () => {
     const details = await getHero(route.params.id);
     setHeroDetails(details)
+
+    
   }
   useEffect(() => {
     getDetails()
   }, [])
 
   if (!heroDetails) {
-    return <ActivityIndicator style={styles.loading} size="large" color="#f0131e" />
+    return (
+    <View style={styles.background}>
+      <ActivityIndicator style={styles.loading} size="large" color="#ffffff" />
+    </View>)
   }
   return (
-    <Text>Details {route.params.id}</Text>
+    <View style={styles.background}>
+      <ImageBackground
+        style={styles.image}
+        source={{uri: heroDetails.image}}
+      >
+        <LinearGradient style={styles.titleBackground} colors={['#f0131e00', '#f0131e']}>
+          <Text style={styles.title}>{heroDetails.name}</Text>
+        </LinearGradient>
+      </ImageBackground>
+      <Text style={styles.description}>{heroDetails.description}</Text>
+    </View>
   );
 };
