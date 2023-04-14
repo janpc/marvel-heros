@@ -72,8 +72,4 @@ export function LoginProvider({ children }: { children: ReactNode }){
   );
 }
 
-
 export default LoginContext;
-
-
-

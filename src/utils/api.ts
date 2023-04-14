@@ -1,6 +1,4 @@
-import { MARVEL_PUBLIC_KEY, MARVEL_PRIVATE_KEY } from '@env'
-import { create } from 'apisauce'
-import MD5  from 'crypto-js/md5'
+import { getCacheData, getNavigatableUrl } from './ProxyProvider'
 
 type FullHero = {
   "id": number,
@@ -89,29 +87,18 @@ type ComicType ={
   title: string;
 }
 
-const ts = new Date().getTime().toString();
-const hash = MD5(ts + MARVEL_PRIVATE_KEY + MARVEL_PUBLIC_KEY).toString()
-
-const api = create({
-  baseURL: 'http://gateway.marvel.com/v1/public',
-  headers: { Accept: '*/*' },
-  params: {
-    "apikey": MARVEL_PUBLIC_KEY,
-    "ts": ts,
-    "hash": hash
-  }
-})
-
 export const getHeros = async (page: number): Promise<{list: HeroType[], total: number}> => {
-  const res = await api.get(`/characters?limit=20&offset=${20 * page}`);
-  const resultsNormalized = res.data.data.results.map((hero: FullHero ) => normalizeHero(hero))
+  const url = getNavigatableUrl('/characters', 20, page);
+  const data = await getCacheData(url);
+  const dataultsNormalized = data.results.map((hero: FullHero ) => normalizeHero(hero))
 
-  return {list: resultsNormalized, total: res.data.data.total};
+  return {list: dataultsNormalized, total: data.total};
 }
 
 export const getHero = async (id: number): Promise<HeroType> => {
-  const res = await api.get(`/characters/${id}`);
-  const hero = normalizeHero(res.data.data.results[0])
+  const url = getNavigatableUrl(`/characters/${id}`, 1, 0);
+  const data = await getCacheData(url);
+  const hero = normalizeHero(data.results[0])
 
   return hero;
 }
@@ -129,8 +116,9 @@ const normalizeHero = (hero: FullHero): HeroType => {
 }
 
 export const getComics = async (id: number, page: number): Promise<ComicType[]> => {
-  const res = await api.get(`/characters/${id}/comics?limit=20&offset=${20 * page}`);
-  const resultsNormalized = res.data.data.results.map((comic: FullComic ) => normalizeComic(comic))
+  const url = getNavigatableUrl(`/characters/${id}/comics`, 20, page);
+  const data = await getCacheData(url);
+  const resultsNormalized = data.results.map((comic: FullComic ) => normalizeComic(comic))
 
   return resultsNormalized;
 }
