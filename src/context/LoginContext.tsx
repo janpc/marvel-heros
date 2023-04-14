@@ -1,5 +1,6 @@
-import React, { createContext, ReactNode, useState } from "react";
+import React, { createContext, ReactNode, useEffect, useState } from "react";
 import { validateLogin } from "../utils/validateLogin";
+import { retrieveData, storeData } from "../utils/localData";
 
 type UserType = {
   name: string | undefined;
@@ -29,16 +30,30 @@ export function LoginProvider({ children }: { children: ReactNode }){
   const [logged, setLogged] = useState(false);
   const [user, setUser] = useState<UserType>({name: '', email: ''});
 
+  const getUserData = async () => {
+    const isUserLogged = await retrieveData('isUserLogged')
+    if(isUserLogged) {
+      const storedUser = await retrieveData('user')
+      setLogged(true);
+      setUser(storedUser);
+    }
+  }
+
+  useEffect(() => {
+    getUserData();
+  }, []);
+
   function login(email: string, password: string): boolean {
     const {user, error} = validateLogin(email, password);
 
     if( error) {
       return false
     }
-    console.log('hola');
 
     setUser({name: user.name, email: user.email});
     setLogged(true);
+    storeData('user', {name: user.name, email: user.email})
+    storeData('isUserLogged', true)
 
     return true;
   }
@@ -46,6 +61,8 @@ export function LoginProvider({ children }: { children: ReactNode }){
   function logout() {
     setUser({name: '', email: ''});
     setLogged(false);
+    storeData('user', {name: '', email: ''})
+    storeData('isUserLogged', false)
   }
 
   return (
