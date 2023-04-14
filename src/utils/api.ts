@@ -65,12 +65,28 @@ type FullHero = {
   }
 }
 
+type FullComic = {
+  "id": number,
+  "title": string,
+  "description": string,
+  "thumbnail": {
+    "path": string,
+    "extension": string
+  },
+}
+
 type HeroType ={
   id: number;
   image: string;
   name: string;
   description: string;
   comics: number;
+}
+
+type ComicType ={
+  id: number;
+  image: string;
+  title: string;
 }
 
 const ts = new Date().getTime().toString();
@@ -86,7 +102,7 @@ const api = create({
   }
 })
 
-export const  getHeros = async (page: number): Promise<{list: HeroType[], total: number}> => {
+export const getHeros = async (page: number): Promise<{list: HeroType[], total: number}> => {
   const res = await api.get(`/characters?limit=20&offset=${20 * page}`);
   const resultsNormalized = res.data.data.results.map((hero: FullHero ) => normalizeHero(hero))
 
@@ -110,4 +126,21 @@ const normalizeHero = (hero: FullHero): HeroType => {
   }
 
   return heroNormalized;
+}
+
+export const getComics = async (id: number, page: number): Promise<ComicType[]> => {
+  const res = await api.get(`/characters/${id}/comics?limit=20&offset=${20 * page}`);
+  const resultsNormalized = res.data.data.results.map((comic: FullComic ) => normalizeComic(comic))
+
+  return resultsNormalized;
+}
+
+const normalizeComic = (comic: FullComic): ComicType => {
+  const comicNormalized = {
+    id: comic.id,
+    title: comic.title,
+    image: comic.thumbnail.path + '.' + comic.thumbnail.extension,
+  }
+
+  return comicNormalized;
 }

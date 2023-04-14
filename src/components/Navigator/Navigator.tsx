@@ -4,7 +4,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import Login from '../../screens/Login';
 import HeroList from '../../screens/HerosList';
-import HeroDetails from '../../screens/HerosDetails';
+import HeroDetails from '../../screens/HeroDetails';
 import LoginContext from '../../context/LoginContext';
 import UserMenu from '../UserMenu';
 import styles from './styles';

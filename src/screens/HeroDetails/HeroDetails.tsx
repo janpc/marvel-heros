@@ -1,9 +1,9 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, ImageBackground, Text, View } from 'react-native';
-import { LinearGradient } from 'expo-linear-gradient';
+import { ActivityIndicator, View } from 'react-native';
 import { getHero } from '../../utils/api';
 import styles from './styles';
+import ComicsList from '../../components/ComicsList';
 
 type Props = NativeStackScreenProps<RootStackParamList, "HeroDetails", 'MyRouter'>;
 
@@ -36,15 +36,7 @@ export default function HeroDetails({route}: Props) {
   }
   return (
     <View style={styles.background}>
-      <ImageBackground
-        style={styles.image}
-        source={{uri: heroDetails.image}}
-      >
-        <LinearGradient style={styles.titleBackground} colors={['#f0131e00', '#f0131e']}>
-          <Text style={styles.title}>{heroDetails.name}</Text>
-        </LinearGradient>
-      </ImageBackground>
-      <Text style={styles.description}>{heroDetails.description}</Text>
+      <ComicsList item={heroDetails} />
     </View>
   );
 };
